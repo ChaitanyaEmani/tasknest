@@ -8,7 +8,7 @@ const Navbar = () => {
 
   return (
     <div className='md:px-10 pt-4 flex justify-between items-center'>
-        <div className='text-xl md:text-2xl font-bold'>TaskNest</div>
+        <Link href='/' className='text-xl md:text-2xl font-bold'>TaskNest</Link>
         
             <ul className='hidden md:flex space-x-4'>
                 <Link className='hover:text-blue-500 cursor-pointer' href='/'>Home</Link>

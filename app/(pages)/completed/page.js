@@ -1,14 +1,14 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Tasks from '../../components/Tasks'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import axios from 'axios'
 
-const page = () => {
+const CompletedPage = () => {
 
-    const [completedTasks, setCompletedTasks] = React.useState([]);
+    const [completedTasks, setCompletedTasks] = useState([]);
 
     const fetchCompletedTasks = async ()=>{
         const response = await axios.get('/api');
@@ -52,4 +52,4 @@ const page = () => {
   
 }
 
-export default page
+export default CompletedPage

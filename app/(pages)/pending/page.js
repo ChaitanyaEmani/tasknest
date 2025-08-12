@@ -1,0 +1,61 @@
+"use client";
+
+import React, { useEffect } from "react";
+import Tasks from "../../components/Tasks";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+
+const page = () => {
+  const [pendingTasks, setPendingTasks] = React.useState([]);
+
+  const fetchPendingTasks = async () => {
+    const response = await axios.get("/api");
+
+    setPendingTasks(
+      response.data.todos.filter((todo) => todo.isCompleted === false)
+    );
+  };
+
+  const handleComplete = async (mongoId) => {
+    const response = await axios.put(`/api?mongoId=${mongoId}`);
+    toast.success(response.data.message);
+    await fetchPendingTasks();
+  };
+
+  const handleDelete = async (mongoId) => {
+    const response = await axios.delete(`/api?mongoId=${mongoId}`);
+    toast.success(response.data.message);
+    await fetchPendingTasks();
+  };
+  useEffect(() => {
+    fetchPendingTasks();
+  }, []);
+
+  return (
+    <div className="pt-10 flex flex-col items-center">
+      <h1 className="text-4xl font-bold mb-4">Pending Tasks</h1>
+      <ToastContainer theme="dark" />
+      <div className="my-10 w-full max-w-2xl">
+        {pendingTasks.length === 0 && (
+          <p className="text-gray-500 text-center">No Pending tasks yet.</p>
+        )}
+        <ul className="list-disc space-y-2 text-gray-700">
+          {pendingTasks.map((todo, index) => (
+            <Tasks
+              key={index}
+              title={todo.title}
+              description={todo.description}
+              complete={todo.isCompleted}
+              deleteTodo={handleDelete}
+              mongoId={todo._id}
+            completeTodo={handleComplete}
+            />
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+};
+
+export default page;

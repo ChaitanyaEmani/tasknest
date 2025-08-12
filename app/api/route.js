@@ -39,4 +39,17 @@ export async function PUT(request) {
     );
     return NextResponse.json({ message: "Todo Completed" });
 }
+
+export async function PATCH(request) {
+    const mongoId = request.nextUrl.searchParams.get("mongoId");
+    const { title, description } = await request.json();
+
+    await TodoModel.findByIdAndUpdate(
+        { _id: mongoId },
+        { title, description }
+    );
+
+    return NextResponse.json({ message: "Todo Updated" });
+}
+
     
